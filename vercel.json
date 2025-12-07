@@ -1,0 +1,153 @@
+interface BuildCommand {
+  command: string;
+  output?: string;
+}
+
+interface EnvTemplate {
+  [key: string]: string | undefined;
+}
+
+interface HeaderRule {
+  source: string;
+  headers: Array<{ key: string; value: string }>;
+}
+
+interface CacheStrategy {
+  urlPattern: string;
+  options: { [key: string]: any };
+}
+
+interface FrameworkSettings {
+  vercel?: Record<string, any>;
+  netlify?: Record<string, any>;
+}
+
+interface DeployConfig {
+  build: BuildCommand;
+  env: EnvTemplate;
+  headers: Array<HeaderRule>;
+  cacheStrategies: Array<CacheStrategy>;
+  frameworkSettings: FrameworkSettings;
+}
+
+export const deployConfig: DeployConfig = {
+  build: {
+    command: "next build",
+    output: ".next"
+  },
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    DATABASE_URI: process.env.DATABASE_URI
+  },
+  headers: [
+    {
+      source: "/api/:path*",
+      headers: [
+        { key: "Access-Control-Allow-Credentials", value: "true" },
+        { key: "Access-Control-Allow-Origin", value: "*" }
+      ]
+    }
+  ],
+  cacheStrategies: [
+    {
+      urlPattern: "/*",
+      options: {
+        immutable: true,
+        maxAgeSeconds: 60 * 60 * 24 * 365
+      }
+    },
+    {
+      urlPattern: "/api/*",
+      options: {
+        bypassOnDebug: true
+      }
+    }
+  ],
+  frameworkSettings: {
+    vercel: {
+      buildCommand: "next build",
+      startCommand: "next start"
+    },
+    netlify: {
+      buildContext: { NODE_ENV: "production" },
+      functions: ".next/serverless-functions"
+    }
+  }
+};
+
+interface BuildCommand {
+  command: string;
+  output?: string;
+}
+
+interface EnvTemplate {
+  [key: string]: string | undefined;
+}
+
+interface HeaderRule {
+  source: string;
+  headers: Array<{ key: string; value: string }>;
+}
+
+interface CacheStrategy {
+  urlPattern: string;
+  options: { [key: string]: any };
+}
+
+interface FrameworkSettings {
+  vercel?: Record<string, any>;
+  netlify?: Record<string, any>;
+}
+
+interface DeployConfig {
+  build: BuildCommand;
+  env: EnvTemplate;
+  headers: Array<HeaderRule>;
+  cacheStrategies: Array<CacheStrategy>;
+  frameworkSettings: FrameworkSettings;
+}
+
+export const deployConfig: DeployConfig = {
+  build: {
+    command: "next build",
+    output: ".next"
+  },
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    DATABASE_URI: process.env.DATABASE_URI
+  },
+  headers: [
+    {
+      source: "/api/:path*",
+      headers: [
+        { key: "Access-Control-Allow-Credentials", value: "true" },
+        { key: "Access-Control-Allow-Origin", value: "*" }
+      ]
+    }
+  ],
+  cacheStrategies: [
+    {
+      urlPattern: "/*",
+      options: {
+        immutable: true,
+        maxAgeSeconds: 60 * 60 * 24 * 365
+      }
+    },
+    {
+      urlPattern: "/api/*",
+      options: {
+        bypassOnDebug: true
+      }
+    }
+  ],
+  frameworkSettings: {
+    vercel: {
+      buildCommand: "next build",
+      startCommand: "next start"
+    },
+    netlify: {
+      buildContext: { NODE_ENV: "production" },
+      functions: ".next/serverless-functions"
+    }
+  }
+};
